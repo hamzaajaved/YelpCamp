@@ -1,4 +1,4 @@
-<%- include("partials/header") %>
+<%- include("../partials/header") %>
 
 <div class="container">
     <header class="jumbotron">
@@ -17,10 +17,13 @@
             <div class="card">
                 <img class="card-img-top" src="<%= campground.image %>" alt="<%= campground.name %>">
                 <h5 class="card-title"><%= campground.name %></h5>
+                <p>
+                    <a class="btn btn-primary" href="/campgrounds/<%= campground._id %>">More Info</a>
+                </p>
             </div>
         </div>
         <% }) %>
     </div>
 </div>
 
-<%- include("partials/footer") %>
+<%- include("../partials/footer") %>

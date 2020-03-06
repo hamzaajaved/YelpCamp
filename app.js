@@ -1,46 +1,106 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
+var express = require("express"),
+  app = express(),
+  mongoose = require("mongoose"),
+  bodyParser = require("body-parser"),
+  Campground = require("./models/campgrounds"),
+  Comment = require("./models/comments"),
+  seedDB = require("./seeds");
+
+seedDB();
+mongoose.connect("mongodb://localhost/yelp_camp", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
-
-var campgrounds = [
-  {
-    name: "Salmon Creek",
-    image: "https://farm9.staticflickr.com/8225/8524305204_43934a319d.jpg"
-  },
-  {
-    name: "Granite Hill",
-    image:
-      "https://www.talk-business.co.uk/wp-content/uploads/2020/01/shutterstock_587557163.jpg"
-  },
-  {
-    name: "Sunset Beach Rest",
-    image:
-      "https://d2ciprw05cjhos.cloudfront.net/files/v3/styles/gs_standard/public/images/18/06/gettyimages-649155058.jpg?itok=DG3f7cE4"
-  }
-];
+// app.use(express.static(__dirname + "/public"));
 
 app.get("/", function(req, res) {
-  res.render("landing");
+  res.render("Campgrounds/landing");
 });
 
 app.get("/campgrounds", function(req, res) {
-  res.render("campgrounds", { campgrounds: campgrounds });
+  Campground.find({}, function(err, campgrounds) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("Campgrounds/index", { campgrounds: campgrounds });
+    }
+  });
 });
 
+app.get("/campgrounds/new", function(req, res) {
+  res.render("Campgrounds/new.ejs");
+});
+
+// Display a Form to make a new Campground
 app.post("/campgrounds", function(req, res) {
   //   res.send("YOU HIT THE POST ROUTE");
   var name = req.body.name;
   var image = req.body.image;
-  var newCampground = { name: name, image: image };
-  campgrounds.push(newCampground);
-
-  res.redirect("/campgrounds");
+  var desc = req.body.description;
+  var newCampground = { name: name, image: image, description: desc };
+  // campgrounds.push(newCampground);
+  Campground.create(newCampground, function(err, campground) {
+    if (err) {
+      console.log("SOMETHING WENT WRONG");
+    } else {
+      res.redirect("/campgrounds");
+    }
+  });
 });
 
-app.get("/campgrounds/new", function(req, res) {
-  res.render("new.ejs");
+// Show info about one campground page
+app.get("/campgrounds/:id", function(req, res) {
+  Campground.findById(req.params.id)
+    .populate("comments")
+    .exec(function(err, foundCampground) {
+      if (err) {
+        console.log(error);
+      } else {
+        res.render("Campgrounds/show", { Campground: foundCampground });
+      }
+    });
+});
+
+// ===================
+// Comments Routes
+// ===================
+
+app.get("/campgrounds/:id/comments/new", function(req, res) {
+  Campground.findById(req.params.id, function(err, campground) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("Comments/new", { campground: campground });
+    }
+  });
+});
+
+app.post("/campgrounds/:id/comments", function(req, res) {
+  Campground.findById(req.params.id, function(err, campground) {
+    if (err) {
+      console.log(err);
+      res.redirect("/campgrounds");
+    } else {
+      // console.log(req.params.id);
+
+      var text = req.body.text;
+      var author = req.body.author;
+
+      var newComment = { text: text, author: author };
+      console.log(newComment);
+      Comment.create(newComment, function(err, comment) {
+        if (err) {
+          console.log(err);
+        } else {
+          campground.comments.push(comment);
+          campground.save();
+          res.redirect("/campgrounds/" + campground._id);
+        }
+      });
+    }
+  });
 });
 
 app.listen("5000", function() {
