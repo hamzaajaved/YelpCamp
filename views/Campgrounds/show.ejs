@@ -18,6 +18,9 @@
                     <h4 class="text-right">$9500/week</h4>
                     <h4><a> <%= Campground.name %></a></h4>
                     <p><%= Campground.description %></p>
+                    <p>
+                        <em>Submitted By: </em> <%= Campground.author.username %>
+                    </p>
 
                 </div>
             </div>
@@ -30,7 +33,7 @@
                 <% Campground.comments.forEach(function(comment){ %>
                 <div class="row">
                     <div class="col-md-12">
-                        <strong><%= comment.author %> </strong>
+                        <strong><%= comment.author.username %> </strong>
                         <span>7 days ago</span>
                         <p><%= comment.text %></p>
                     </div>
