@@ -22,6 +22,16 @@
                         <em>Submitted By: </em> <%= Campground.author.username %>
                     </p>
 
+
+                    <% if(currentUser && Campground.author.id.equals(currentUser._id)){ %>
+
+                    <a href="/campgrounds/<%= Campground._id %>/edit" class="btn btn-warning btn-xs">Edit</a>
+
+                    <form action="/campgrounds/<%= Campground._id %>?_method=DELETE" method="POST"
+                        style="display:inline">
+                        <button class="btn btn-xs btn-danger">Delete</button>
+                    </form>
+                    <% } %>
                 </div>
             </div>
             <div class="well">
@@ -36,6 +46,17 @@
                         <strong><%= comment.author.username %> </strong>
                         <span>7 days ago</span>
                         <p><%= comment.text %></p>
+
+                        <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                        <a href="/campgrounds/<%= Campground._id %>/comments/<%= comment._id %>/edit"
+                            class="btn btn-warning btn-xs">Edit</a>
+                            
+                        <form action="/campgrounds/<%= Campground._id %>/comments/<%= comment._id %>?_method=DELETE"
+                            method="POST" style="display:inline">
+                            <button class="btn btn-xs btn-danger">Delete</button>
+                        </form>
+
+                        <% } %>
                     </div>
                 </div>
 

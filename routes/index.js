@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require("../models/user");
 var passport = require("passport");
 
+//root route
 router.get("/", function(req, res) {
   res.render("Campgrounds/landing");
 });
@@ -22,7 +23,7 @@ router.post("/register", function(req, res) {
   User.register(newUser, req.body.password, function(err, user) {
     if (err) {
       console.log(err);
-      return res.render("/register");
+      return res.redirect("/register");
     } else {
       passport.authenticate("local")(req, res, function() {
         res.redirect("/campgrounds");
