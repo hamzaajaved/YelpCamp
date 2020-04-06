@@ -50,7 +50,7 @@
                         <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
                         <a href="/campgrounds/<%= Campground._id %>/comments/<%= comment._id %>/edit"
                             class="btn btn-warning btn-xs">Edit</a>
-                            
+
                         <form action="/campgrounds/<%= Campground._id %>/comments/<%= comment._id %>?_method=DELETE"
                             method="POST" style="display:inline">
                             <button class="btn btn-xs btn-danger">Delete</button>
@@ -64,15 +64,9 @@
                 <% }) %>
             </div>
         </div>
-
     </div>
-
 </div>
 
-
-<p>
-
-</p>
 
 
 

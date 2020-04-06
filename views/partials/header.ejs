@@ -5,22 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YelpCamp</title>
+    <link rel="stylesheet" href="/stylesheets/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
-
-    <style>
-        .thumbnail img {
-            width: 100%;
-        }
-
-        .thumbnail {
-            padding: 0;
-        }
-
-        .thumbnail .caption-full {
-            padding: 9px;
-        }
-    </style>
 
 </head>
 
@@ -52,3 +39,19 @@
             </div>
         </div>
     </nav>
+
+    <div class="container">
+        <% if(error && error.length > 0){ %>
+        <div class="alert alert-danger" role="alert">
+            <%= error %>
+        </div>
+
+        <% } %>
+
+        <% if(success && success.length > 0){ %>
+        <div class="alert alert-success" role="alert">
+            <%= success %>
+        </div>
+
+        <% } %>
+    </div>

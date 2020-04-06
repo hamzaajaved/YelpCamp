@@ -48,7 +48,7 @@ router.post("/campgrounds", middleware.isLoggedIn, function(req, res) {
 });
 
 // SHOW - shows more info about one campground
-router.get("/campgrounds/:id", middleware.isLoggedIn, function(req, res) {
+router.get("/campgrounds/:id", function(req, res) {
   Campground.findById(req.params.id)
     .populate("comments")
     .exec(function(err, foundCampground) {
