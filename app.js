@@ -19,7 +19,7 @@ var CommentRoute = require("./routes/comments"),
 
 // seedDB();
 mongoose.connect(
-  "mongodb+srv://admin:admin@yelpcamp-kfyl4.mongodb.net/test?retryWrites=true&w=majority",
+  "mongodb+srv://admin:admin@hamzajaved.kfyl4.mongodb.net/yelpcamp?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
